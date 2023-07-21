@@ -16,6 +16,7 @@ Makefile.in
 /configure
 /dnsmasq/undefined_sys_hack.c
 /hello/undefined_sys_hack.c
+/rust-hello-world/undefined_sys_hack.c
 /initrd
 /install-sh
 /memcached/stamp-libevent-dir
