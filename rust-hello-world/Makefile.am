@@ -59,8 +59,11 @@ UKL.a: trampoline.o rust-hello-world.a undefined_sys_hack.o
 undefined_sys_hack.c: $(top_builddir)/undefined_sys_hack.c
 	cp $< $@
 
+trampoline.c: $(top_builddir)/trampoline.c
+	cp $< $@
+
 rust-hello-world.a:
-	cargo +nightly build --release -Z build-std=std --target x86_64-unknown-linux-ukl.json --lib
+	cargo +nightly build --release -Z build-std=std --target ../x86_64-unknown-linux-ukl.json --lib
 	cp target/x86_64-unknown-linux-ukl/release/libmain.a $@
 
 # automake doesn't add this rule unless we were to specify a C program
