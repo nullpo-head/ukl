@@ -129,6 +129,7 @@ AC_CONFIG_FILES([Makefile \
                  dnsmasq/Makefile \
                  hello/Makefile \
                  rust-hello-world/Makefile \
+                 rust-simpleweb/Makefile \
                  memcached/Makefile \
 		 mpc-bench/Makefile \
 		 fio/Makefile \

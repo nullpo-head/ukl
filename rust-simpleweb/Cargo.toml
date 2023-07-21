@@ -1,0 +1,18 @@
+[package]
+name = "rust-simpleweb"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "main"
+path = "src/lib.rs"
+
+[lib]
+name = "main"
+crate-type = ["staticlib"]
+path = "src/lib.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
