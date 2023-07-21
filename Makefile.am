@@ -47,6 +47,9 @@ min-clean:
 	-rm UKL.a
 	cd $(PROGRAM) && $(MAKE) clean
 
+clean-image:
+	-rm linux/vmlinux linux/vmlinux.o linux/arch/x86_64/boot/bzImage vmlinuz
+
 DIST_SUBDIRS = dnsmasq hello memcached redis mpc-bench fio rust-hello-world rust-simpleweb rust-cargo-generic
 
 #----------------------------------------------------------------------

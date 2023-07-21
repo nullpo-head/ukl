@@ -60,6 +60,10 @@ def build(_cargo_args):
         "--lib",
     ]
     subprocess.run(command, check=True)
+    subprocess.run(
+        ["make", "clean", "-C", UKL_ROOT + "/rust-cargo-generic"], check=True
+    )
+    subprocess.run(["make", "clean-image", "-C", UKL_ROOT], check=True)
     shutil.copy(
         "./target/x86_64-unknown-linux-ukl/release/libmain.a",
         UKL_ROOT + "/rust-cargo-generic/libmain.a",
@@ -68,6 +72,14 @@ def build(_cargo_args):
     shutil.copy(
         UKL_ROOT + "/linux/vmlinux",
         "target/x86_64-unknown-linux-ukl/release/vmlinux",
+    )
+    shutil.copy(
+        UKL_ROOT + "/vmlinuz",
+        "target/x86_64-unknown-linux-ukl/release/vmlinuz",
+    )
+    shutil.copy(
+        UKL_ROOT + "/linux/arch/x86_64/boot/bzImage",
+        "target/x86_64-unknown-linux-ukl/release/bzImage",
     )
 
 
