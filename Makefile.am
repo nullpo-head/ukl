@@ -47,7 +47,7 @@ min-clean:
 	-rm UKL.a
 	cd $(PROGRAM) && $(MAKE) clean
 
-DIST_SUBDIRS = dnsmasq hello memcached redis mpc-bench fio rust-hello-world rust-simpleweb
+DIST_SUBDIRS = dnsmasq hello memcached redis mpc-bench fio rust-hello-world rust-simpleweb rust-cargo-generic
 
 #----------------------------------------------------------------------
 # Build libgcc and static libstdc++.

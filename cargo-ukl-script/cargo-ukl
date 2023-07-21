@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+
+# The path to the root of the UKL project source, where we should run `make`.
+UKL_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
+
+def parse_args():
+    args = sys.argv[1:]
+    if args and args[0] == "ukl":
+        # This is invocation from `cargo ukl`. Remove the `ukl` argument.
+        args.pop(0)
+
+    argparser = argparse.ArgumentParser(
+        "cargo-ukl", description="cargo-ukl builds the Cargo project as UKL unikernel."
+    )
+    subparsers = argparser.add_subparsers(dest="subcommand")
+
+    subparsers.add_parser("build")
+    subparsers.add_parser("boot")
+
+    args, remaining_args = argparser.parse_known_args(args)
+
+    if not args.subcommand:
+        argparser.print_help()
+        exit(1)
+
+    return args.subcommand, remaining_args
+
+
+def main():
+    subcommand, remaining_args = parse_args()
+
+    if subcommand == "build":
+        build(remaining_args)
+    elif subcommand == "boot":
+        boot(remaining_args)
+    else:
+        raise Exception("Unknown subcommand: " + subcommand)
+
+
+def build(_cargo_args):
+    command = [
+        "cargo",
+        "+nightly",
+        "build",
+        "--release",
+        "-Z",
+        "build-std=std",
+        "--target",
+        UKL_ROOT + "/x86_64-unknown-linux-ukl.json",
+        "--lib",
+    ]
+    subprocess.run(command, check=True)
+    shutil.copy(
+        "./target/x86_64-unknown-linux-ukl/release/libmain.a",
+        UKL_ROOT + "/rust-cargo-generic/libmain.a",
+    )
+    subprocess.run(["make", "-C", UKL_ROOT, "-j", "32"], check=True)
+    shutil.copy(
+        UKL_ROOT + "/linux/vmlinux",
+        "target/x86_64-unknown-linux-ukl/release/vmlinux",
+    )
+
+
+def boot(_cargo_args):
+    os.chdir(UKL_ROOT)
+    subprocess.run(["make", "boot"], check=True)
+
+
+if __name__ == "__main__":
+    main()

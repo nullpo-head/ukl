@@ -130,6 +130,7 @@ AC_CONFIG_FILES([Makefile \
                  hello/Makefile \
                  rust-hello-world/Makefile \
                  rust-simpleweb/Makefile \
+                 rust-cargo-generic/Makefile \
                  memcached/Makefile \
 		 mpc-bench/Makefile \
 		 fio/Makefile \
