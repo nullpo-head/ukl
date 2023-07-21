@@ -6,7 +6,7 @@ use std::io::{Read, Write};
 use std::thread;
 
 #[no_mangle]
-pub fn rust_main() {
+pub fn ukl_main() {
     main()
 }
 

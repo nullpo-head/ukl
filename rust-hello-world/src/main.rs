@@ -1,5 +1,5 @@
 #[no_mangle]
-pub fn rust_main() {
+pub fn ukl_main() {
     main()
 }
 

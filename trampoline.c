@@ -1,6 +1,6 @@
-void rust_main();
+void ukl_main();
 
 int main(int argc, char **argv) {
-    rust_main();
+    ukl_main();
 }
 
