@@ -38,11 +38,11 @@ endif
 data.tar.gz:
 	touch data.tar.gz
 
-UKL.a: hello-world.o undefined_sys_hack.o
+UKL.a: trampoline.o rust-hello-world.a undefined_sys_hack.o
 	rm -f $@ temp.o
 	ld -r -o temp.o -allow-multiple-definition \
 	    $(CRT_STARTS) \
-	    $< \
+	    trampoline.o rust-hello-world.a \
 	    --start-group \
 	    --whole-archive \
 	    $(MATH_LIB) $(RT_LIB) $(PTHREAD_LIB) $(C_LIB) \
@@ -57,6 +57,10 @@ UKL.a: hello-world.o undefined_sys_hack.o
 
 undefined_sys_hack.c: $(top_builddir)/undefined_sys_hack.c
 	cp $< $@
+
+rust-hello-world.a:
+	cargo +nightly build  -Z build-std=std --target x86_64-unknown-linux-ukl.json --lib
+	cp target/x86_64-unknown-linux-ukl/release/libmain.a $@
 
 # automake doesn't add this rule unless we were to specify a C program
 # to compile, which we don't want to do because of the very special
