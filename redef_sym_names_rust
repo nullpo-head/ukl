@@ -1,0 +1,9 @@
+ukl_dladdr __dladdr
+ukl_dladdr1 __dladdr1
+ukl_dlclose __dlclose
+ukl_dlerror __dlerror
+ukl_dlinfo __dlinfo
+ukl_dlmopen __dlmopen
+ukl_dlopen __dlopen
+ukl_dlsym __dlsym
+ukl_dlvsym __dlvsym
