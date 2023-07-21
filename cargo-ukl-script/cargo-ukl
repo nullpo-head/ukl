@@ -23,6 +23,7 @@ def parse_args():
 
     subparsers.add_parser("build")
     subparsers.add_parser("boot")
+    subparsers.add_parser("new")
 
     args, remaining_args = argparser.parse_known_args(args)
 
@@ -40,6 +41,8 @@ def main():
         build(remaining_args)
     elif subcommand == "boot":
         boot(remaining_args)
+    elif subcommand == "new":
+        new(remaining_args)
     else:
         raise Exception("Unknown subcommand: " + subcommand)
 
@@ -71,6 +74,46 @@ def build(_cargo_args):
 def boot(_cargo_args):
     os.chdir(UKL_ROOT)
     subprocess.run(["make", "boot"], check=True)
+
+
+def new(cargo_args):
+    subprocess.run(["cargo", "new"] + cargo_args, check=True)
+    cargo_dir = cargo_args[0]
+
+    # Add the staticlib crate type to the Cargo.toml.
+    static_lib = """
+[lib]
+name = "main"
+path = "src/main.rs"
+crate-type = ["staticlib"]
+"""
+    toml = cargo_dir + "/Cargo.toml"
+    with open(toml, "r") as f:
+        lines = f.readlines()
+
+    package_end_idx = 0
+    for line in lines:
+        if not line.strip():
+            break
+        package_end_idx += 1
+
+    lines.insert(package_end_idx, static_lib)
+
+    with open(toml, "w") as f:
+        f.writelines(lines)
+
+    # Add the UKL entry function to main.rs.
+    main_rs = cargo_dir + "/src/main.rs"
+    with open(main_rs, "a") as f:
+        f.write(
+            """
+
+#[no_mangle]
+pub fn ukl_main() {
+    main()
+}
+"""
+        )
 
 
 if __name__ == "__main__":
